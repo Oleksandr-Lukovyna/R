@@ -1,0 +1,13 @@
+library(tidyverse)
+data()
+view(mpg)
+glimpse(mpg)
+
+# Data viz with ggplot2
+
+ggplot(mpg, aes(x = cty, 
+                y = hwy,
+                color = class)) + 
+  geom_point() +
+  geom_smooth(method = "lm") +
+  scale_color_brewer(palette = "Dark2")
