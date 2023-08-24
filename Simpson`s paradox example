@@ -1,0 +1,41 @@
+set.seed(0)
+
+x <- c(rnorm(30, 65, 10),
+       rnorm(30, 70, 10),
+       rnorm(40, 90, 15))
+y <- c(rnorm(30, 75, 10),
+       rnorm(30, 50, 10),
+       rnorm(40, 35, 15)) + .3 * x
+group <- c(rep("A", 30),
+           rep("B", 30), 
+           rep("C", 40))
+
+xnew <- round(((x - 47) / (112 - 47)) * 20 + 1960)
+ynew <- round(((y - 35) / (119 - 35)) * 50 + 250) / 1000
+
+batting <- data.frame(year = xnew, average = ynew, group)
+
+# Simpson's paradox -------------------------------------------------------
+
+#falling lm in the hole group
+library(tidyverse)
+View(batting)
+
+ggplot(batting, aes(x = year, 
+                    y = average)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              se = FALSE) +
+  scale_y_continuous(labels = scales::label_number(accuracy = .001)) +
+  theme_minimal()
+
+#but uprising lm in three subgroup
+ggplot(batting, aes(x = year, 
+                    y = average,
+                    color = group)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              se = FALSE) +
+  scale_y_continuous(labels = scales::label_number(accuracy = .001)) +
+  scale_color_brewer(palette = "Dark2") +
+  theme_minimal() 
